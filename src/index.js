@@ -1,3 +1,5 @@
+import { createStore } from "./createStore";
+import { rootReducer } from "./redux/rootReducer";
 import "./styles.css";
 
 const counter = document.getElementById("counter");
@@ -6,29 +8,19 @@ const subButton = document.getElementById("sub");
 const asyncButton = document.getElementById("async");
 const themeButton = document.getElementById("theme");
 
-let state = 0;
+const store = createStore(rootReducer, 0);
+store.subscribe(() => {
+    const state = store.getState();
+    counter.textContent = state;
+});
+
+store.dispatch({type:'INIT_APP'});
 
 addButton.addEventListener("click", () => {
-  state++;
-  render();
+    store.dispatch({type: 'INCREMENT'});
 });
 subButton.addEventListener("click", () => {
-  state--;
-  render();
+    store.dispatch({type: 'DECREMENT'});
 });
-asyncButton.addEventListener("click", () => {
-  setTimeout(() => {
-    state = 0;
-    render();
-  }, 2000);
-  render();
-});
-themeButton.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-});
-function render() {
-  counter.textContent = state.toString();
-  render();
-}
-
-render();
+asyncButton.addEventListener("click", () => {});
+themeButton.addEventListener("click", () => {});
