@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, createStore, compose } from "redux";
 import thunk from "redux-thunk";
 import {
   asyncIncrement,
@@ -27,7 +27,13 @@ function logger(state) {
   };
 }
 
-const store = createStore(rootReducer, 0, applyMiddleware(thunk, logger));
+const store = createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(thunk, logger),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
 
 addButton.addEventListener("click", () => {
   store.dispatch(increment());
