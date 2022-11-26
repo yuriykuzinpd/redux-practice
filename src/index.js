@@ -11,7 +11,18 @@ const subButton = document.getElementById("sub");
 const asyncButton = document.getElementById("async");
 const themeButton = document.getElementById("theme");
 
-const store = createStore(rootReducer, 0, applyMiddleware(thunk));
+// custom middleware
+function logger(state) {
+  return function(next) {
+    return function(action) {
+      console.log('state', state.getState());
+      console.log('action', action);
+      return next(action)
+    }
+  }
+}
+
+const store = createStore(rootReducer, 0, applyMiddleware(thunk, logger));
 store.subscribe(() => {
   const state = store.getState();
   counter.textContent = state;
