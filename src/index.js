@@ -1,5 +1,6 @@
-import { createStore } from "./createStore";
+import { createStore } from "redux";
 import { rootReducer } from "./redux/rootReducer";
+import { DECREMENT, INCREMENT } from "./redux/types";
 import "./styles.css";
 
 const counter = document.getElementById("counter");
@@ -10,17 +11,17 @@ const themeButton = document.getElementById("theme");
 
 const store = createStore(rootReducer, 0);
 store.subscribe(() => {
-    const state = store.getState();
-    counter.textContent = state;
+  const state = store.getState();
+  counter.textContent = state;
 });
 
-store.dispatch({type:'INIT_APP'});
+store.dispatch({ type: "INIT_APP" });
 
 addButton.addEventListener("click", () => {
-    store.dispatch({type: 'INCREMENT'});
+  store.dispatch({ type: INCREMENT });
 });
 subButton.addEventListener("click", () => {
-    store.dispatch({type: 'DECREMENT'});
+  store.dispatch({ type: DECREMENT });
 });
 asyncButton.addEventListener("click", () => {});
 themeButton.addEventListener("click", () => {});
