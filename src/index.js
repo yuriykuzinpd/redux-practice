@@ -28,13 +28,6 @@ function logger(state) {
 }
 
 const store = createStore(rootReducer, 0, applyMiddleware(thunk, logger));
-store.subscribe(() => {
-  const state = store.getState();
-  counter.textContent = state.counter;
-  document.body.className = state.theme.value;
-});
-
-store.dispatch({ type: "INIT_APP" });
 
 addButton.addEventListener("click", () => {
   store.dispatch(increment());
@@ -48,3 +41,15 @@ asyncButton.addEventListener("click", () => {
 themeButton.addEventListener("click", () => {
   store.dispatch(changeTheme());
 });
+
+store.subscribe(() => {
+  const state = store.getState();
+  counter.textContent = state.counter;
+  document.body.className = state.theme.value;
+
+  [addButton, subButton, themeButton, asyncButton].forEach(
+    (btn) => (btn.disabled = state.theme.disabled)
+  );
+});
+
+store.dispatch({ type: "INIT_APP" });
